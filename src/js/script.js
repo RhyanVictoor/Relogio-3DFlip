@@ -1,124 +1,44 @@
-const targetDate = new Date();
-targetDate.setHours(targetDate.getHours() + 1);
+document.getElementById('time-form').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-function getTimeSegmentElements(segmentElement) {
-    const segmentDisplay = segmentElement.querySelector(".segment-display");
-    const segmentDisplayTop = segmentDisplay.querySelector(
-        ".segment-display__top"
-    );
-    const segmentDisplayBottom = segmentDisplay.querySelector(
-        ".segment-display__bottom"
-    );
+    const hours = parseInt(document.getElementById('hours-input').value) || 0;
+    const minutes = parseInt(document.getElementById('minutes-input').value) || 0;
+    const seconds = parseInt(document.getElementById('seconds-input').value) || 0;
 
-    const segmentOverlay = segmentDisplay.querySelector(".segment-overlay");
-    const segmentOverlayTop = segmentOverlay.querySelector(
-        ".segment-overlay__top"
-    );
-    const segmentOverlayBottom = segmentOverlay.querySelector(
-        ".segment-overlay__bottom"
-    );
+    let totalTime = (hours * 3600) + (minutes * 60) + seconds;
 
-    return {
-        segmentDisplayTop,
-        segmentDisplayBottom,
-        segmentOverlay,
-        segmentOverlayTop,
-        segmentOverlayBottom,
-    };
-}
+    if (totalTime <= 0) return;
 
-function updateSegmentValues(displayElement, overlayElement, value) {
-    displayElement.textContent = value;
-    overlayElement.textContent = value;
-}
+    document.getElementById('form-container').style.display = 'none';
+    document.getElementById('countdown-container').style.display = 'flex';
 
-function updateTimeSegment(segmentElement, timeValue) {
-    const segmentElements = getTimeSegmentElements(segmentElement);
+    function updateCountdown() {
+        if (totalTime <= 0) {
+            clearInterval(countdownInterval);
+            return;
+        }
 
-    if (
-        parseInt(segmentElements.segmentDisplayTop.textContent, 10) ===
-        timeValue
-    ) {
-        return;
+        totalTime--;
+
+        const displayHours = Math.floor(totalTime / 3600);
+        const displayMinutes = Math.floor((totalTime % 3600) / 60);
+        const displaySeconds = totalTime % 60;
+
+        updateTimeSection("hours", displayHours);
+        updateTimeSection("minutes", displayMinutes);
+        updateTimeSection("seconds", displaySeconds);
     }
 
-    segmentElements.segmentOverlay.classList.add("flip");
+    function updateTimeSection(sectionID, timeValue) {
+        const firstNumber = Math.floor(timeValue / 10);
+        const secondNumber = timeValue % 10;
+        const sectionElement = document.getElementById(sectionID);
+        const timeSegments = sectionElement.querySelectorAll(".time-segment");
 
-    updateSegmentValues(
-        segmentElements.segmentDisplayTop,
-        segmentElements.segmentOverlayBottom,
-        timeValue
-    );
-
-    function finishAnimation() {
-        segmentElements.segmentOverlay.classList.remove("flip");
-        updateSegmentValues(
-            segmentElements.segmentDisplayBottom,
-            segmentElements.segmentOverlayTop,
-            timeValue
-        );
-
-        this.removeEventListener("animationend", finishAnimation);
+        timeSegments[0].textContent = firstNumber;
+        timeSegments[1].textContent = secondNumber;
     }
 
-    segmentElements.segmentOverlay.addEventListener(
-        "animationend",
-        finishAnimation
-    );
-}
-
-function updateTimeSection(sectionID, timeValue) {
-    const firstNumber = Math.floor(timeValue / 10) || 0;
-    const secondNumber = timeValue % 10 || 0;
-    const sectionElement = document.getElementById(sectionID);
-    const timeSegments = sectionElement.querySelectorAll(".time-segment");
-
-    updateTimeSegment(timeSegments[0], firstNumber);
-    updateTimeSegment(timeSegments[1], secondNumber);
-}
-
-function getTimeRemaining(targetDateTime) {
-    const nowTime = Date.now();
-    const complete = nowTime >= targetDateTime;
-
-    if (complete) {
-        return {
-            complete,
-            seconds: 0,
-            minutes: 0,
-            hours: 0,
-        };
-    }
-
-    const secondsRemaining = Math.floor((targetDateTime - nowTime) / 1000);
-    const hours = Math.floor(secondsRemaining / 60 / 60);
-    const minutes = Math.floor(secondsRemaining / 60) - hours * 60;
-    const seconds = secondsRemaining % 60;
-
-    return {
-        complete,
-        seconds,
-        minutes,
-        hours,
-    };
-}
-
-function updateAllSegments() {
-    const timeRemainingBits = getTimeRemaining(new Date(targetDate).getTime());
-
-    updateTimeSection("seconds", timeRemainingBits.seconds);
-    updateTimeSection("minutes", timeRemainingBits.minutes);
-    updateTimeSection("hours", timeRemainingBits.hours);
-
-    return timeRemainingBits.complete;
-}
-
-const countdownTimer = setInterval(() => {
-    const isComplete = updateAllSegments();
-
-    if (isComplete) {
-        clearInterval(countdownTimer);
-    }
-}, 1000);
-
-updateAllSegments();
+    const countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+});

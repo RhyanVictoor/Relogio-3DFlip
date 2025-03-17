@@ -1,91 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="./src/style/style.css" />
-        <title>3D-Flip</title>
-    </head>
-    <body>
-        <div class="countdown">
-            <div class="time-section" id="hours">
-                <div class="time-group">
-                    <div class="time-segment">
-                        <div class="segment-display">
-                            <div class="segment-display__top"></div>
-                            <div class="segment-display__bottom"></div>
-                            <div class="segment-overlay">
-                                <div class="segment-overlay__top"></div>
-                                <div class="segment-overlay__bottom"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="time-segment">
-                        <div class="segment-display">
-                            <div class="segment-display__top"></div>
-                            <div class="segment-display__bottom"></div>
-                            <div class="segment-overlay">
-                                <div class="segment-overlay__top"></div>
-                                <div class="segment-overlay__bottom"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p>Hours</p>
-            </div>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador Regressivo</title>
+    <link rel="stylesheet" href="./src/style/style.css">
+</head>
+<body>
+    <div id="form-container">
+        <form id="time-form">
+            <label for="hours-input">Horas:</label>
+            <input type="number" id="hours-input" min="0" placeholder="Horas" required>
+            
+            <label for="minutes-input">Minutos:</label>
+            <input type="number" id="minutes-input" min="0" max="59" placeholder="Minutos" required>
 
-            <div class="time-section" id="minutes">
-                <div class="time-group">
-                    <div class="time-segment">
-                        <div class="segment-display">
-                            <div class="segment-display__top"></div>
-                            <div class="segment-display__bottom"></div>
-                            <div class="segment-overlay">
-                                <div class="segment-overlay__top"></div>
-                                <div class="segment-overlay__bottom"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="time-segment">
-                        <div class="segment-display">
-                            <div class="segment-display__top"></div>
-                            <div class="segment-display__bottom"></div>
-                            <div class="segment-overlay">
-                                <div class="segment-overlay__top"></div>
-                                <div class="segment-overlay__bottom"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p>Minutes</p>
-            </div>
+            <label for="seconds-input">Segundos:</label>
+            <input type="number" id="seconds-input" min="0" max="59" placeholder="Segundos" required>
 
-            <div class="time-section" id="seconds">
-                <div class="time-group">
-                    <div class="time-segment">
-                        <div class="segment-display">
-                            <div class="segment-display__top"></div>
-                            <div class="segment-display__bottom"></div>
-                            <div class="segment-overlay">
-                                <div class="segment-overlay__top"></div>
-                                <div class="segment-overlay__bottom"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="time-segment">
-                        <div class="segment-display">
-                            <div class="segment-display__top"></div>
-                            <div class="segment-display__bottom"></div>
-                            <div class="segment-overlay">
-                                <div class="segment-overlay__top"></div>
-                                <div class="segment-overlay__bottom"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p>Seconds</p>
+            <button type="submit">Iniciar</button>
+        </form>
+    </div>
+
+    <div id="countdown-container" class="countdown" style="display: none;">
+        <div class="time-section" id="hours">
+            <p>Horas</p>
+            <div class="time-group">
+                <div class="time-segment"><div class="segment-display"><span>0</span></div></div>
+                <div class="time-segment"><div class="segment-display"><span>0</span></div></div>
             </div>
         </div>
-        <script src="./src/js/script.js"></script>
-    </body>
+
+        <div class="time-section" id="minutes">
+            <p>Minutos</p>
+            <div class="time-group">
+                <div class="time-segment"><div class="segment-display"><span>0</span></div></div>
+                <div class="time-segment"><div class="segment-display"><span>0</span></div></div>
+            </div>
+        </div>
+
+        <div class="time-section" id="seconds">
+            <p>Segundos</p>
+            <div class="time-group">
+                <div class="time-segment"><div class="segment-display"><span>0</span></div></div>
+                <div class="time-segment"><div class="segment-display"><span>0</span></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./src/js/script.js"></script>
+</body>
 </html>
